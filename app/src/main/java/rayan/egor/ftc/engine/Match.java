@@ -11,9 +11,11 @@ import org.json.JSONObject;
 
 public class Match implements Parcelable {
 
+    //YAY MAGIC NUMBERS!
     public static final byte ANSWER_UNANSWERED = 0;//must remain zero
-    public static final byte ANSWER_CORRECT = 1;
-    public static final byte ANSWER_WRONG = 2;
+    public static final byte ANSWER_CORRECT = 1;//must remain one
+    public static final byte ANSWER_WRONG = 2;//must remain two
+
     static final Parcelable.Creator<Match> CREATOR
             = new Parcelable.Creator<Match>() {
 
@@ -59,8 +61,8 @@ public class Match implements Parcelable {
 
         enemyNickname = in.readString();
 
-        myRatingChange=in.readInt();
-        enemyRatingChange=in.readInt();
+        myRatingChange = in.readInt();
+        enemyRatingChange = in.readInt();
     }
 
     public int getMyRatingChange() {

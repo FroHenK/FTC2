@@ -161,14 +161,14 @@
         android:text="Настройки"
         android:textColor="@color/colorButtonText"
         android:textSize="23sp"
-        app:layout_constraintBottom_toTopOf="@+id/answerButton4"
+        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/answerButton2" />
 
     <Button
-        android:id="@+id/answerButton4"
+        android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"

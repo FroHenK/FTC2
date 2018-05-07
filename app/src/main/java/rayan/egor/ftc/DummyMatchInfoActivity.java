@@ -30,7 +30,7 @@ public class DummyMatchInfoActivity extends AppCompatActivity {
                 startActivityForResult(intent, PLAY_MATCH_REQUEST);
             }
         };
-        handler.postDelayed(r, 3000);
+        //handler.postDelayed(r, 3000);
 
 
         findViewById(R.id.mainLayout).setOnClickListener(new View.OnClickListener() {

@@ -17,13 +17,15 @@ import java.util.Random;
 import rayan.egor.ftc.engine.Match;
 
 import static rayan.egor.ftc.Constants.PLAY_MATCH_REQUEST;
+import static rayan.egor.ftc.RESTConstants.PREF;
+import static rayan.egor.ftc.RESTConstants.TOKEN;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button playButton;
     private Button ratingButton;
     private Button settingsButton;
-    private Button feedbackButton;
+    private Button logoutButton;
 
 
     @Override
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         playButton = findViewById(R.id.answerButton1);
         ratingButton = findViewById(R.id.answerButton2);
         settingsButton = findViewById(R.id.answerButton3);
-        feedbackButton = findViewById(R.id.answerButton4);
+        logoutButton = findViewById(R.id.logoutButton);
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSharedPreferences(PREF, MODE_PRIVATE).edit().remove(TOKEN).apply();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -87,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //TODO replace with legit rating changer
-                int myRating = getSharedPreferences("kek",MODE_PRIVATE).getInt("Dummy_Player_rating", 100);
-                int enemyRating = getSharedPreferences("kek",MODE_PRIVATE).getInt(match.getEnemyNickname() + "_rating", 100);
+                int myRating = getSharedPreferences("kek", MODE_PRIVATE).getInt("Dummy_Player_rating", 100);
+                int enemyRating = getSharedPreferences("kek", MODE_PRIVATE).getInt(match.getEnemyNickname() + "_rating", 100);
                 myRating += match.getMyRatingChange();
                 enemyRating += match.getEnemyRatingChange();
 
-                getSharedPreferences("kek",MODE_PRIVATE).edit().putInt("Dummy_Player_rating", myRating).putInt(match.getEnemyNickname() + "_rating", enemyRating).apply();
+                getSharedPreferences("kek", MODE_PRIVATE).edit().putInt("Dummy_Player_rating", myRating).putInt(match.getEnemyNickname() + "_rating", enemyRating).apply();
 
                 Intent intent = new Intent(MainActivity.this, DummyMatchResultsActivity.class);
                 intent.putExtra(getString(R.string.match), match);

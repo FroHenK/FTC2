@@ -51,7 +51,7 @@ public class MatchActivity extends AppCompatActivity {
         answerButtons.add((Button) findViewById(R.id.answerButton1));
         answerButtons.add((Button) findViewById(R.id.answerButton2));
         answerButtons.add((Button) findViewById(R.id.answerButton3));
-        answerButtons.add((Button) findViewById(R.id.answerButton4));
+        answerButtons.add((Button) findViewById(R.id.logoutButton));
 
 
         myScoreViews = new ArrayList<>();
