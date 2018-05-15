@@ -40,8 +40,8 @@ public class DummyMatchResultsActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.myNicknameTextView)).setText("Dummy_Player");
         ((TextView) findViewById(R.id.enemyNicknameTextView)).setText(match.getEnemyNickname());
 
-        ((TextView) findViewById(R.id.myCorrectTextView)).setText("Correct: " + match.getMyCorrect());
-        ((TextView) findViewById(R.id.enemyCorrectTextView)).setText("Correct: " + match.getEnemyCorrect());
+        ((TextView) findViewById(R.id.myCorrectTextView)).setText("Правильно: " + match.getMyCorrect());
+        ((TextView) findViewById(R.id.enemyCorrectTextView)).setText("Правильно: " + match.getEnemyCorrect());
 
         ((TextView) findViewById(R.id.myRatingChangeTextView)).setText((match.getMyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getMyRatingChange()));
         ((TextView) findViewById(R.id.enemyRatingChangeTextView)).setText((match.getEnemyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getEnemyRatingChange()));
