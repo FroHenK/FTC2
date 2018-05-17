@@ -10,4 +10,5 @@
 
     <color name="colorButtonText">#FFFFFF</color>
 
+    <color name="card_background">#FFFFFF</color>
 </resources>

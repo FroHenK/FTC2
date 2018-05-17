@@ -27,6 +27,9 @@ public class Match implements Parcelable {
             return new Match[size];
         }
     };
+    private boolean isStarted;
+
+    private String myNickname;
     private String enemyNickname;
     private String type;
     private Question questions[] = new Question[3];
@@ -34,8 +37,22 @@ public class Match implements Parcelable {
     private byte enemyAnswers[] = new byte[3];
     private int myRatingChange;
     private int enemyRatingChange;
+    private String matchToken;
 
-    public Match(JSONObject jsonObject) throws JSONException {
+    public Match(String myNickname, JSONObject jsonObject) throws JSONException {
+        boolean isFirst;
+        if (myNickname.equals(jsonObject.getString("username1")))
+            isFirst = true;
+        else if (myNickname.equals(jsonObject.getString("username2")))
+            isFirst = false;
+        else
+            throw new JSONException("Given username is not in given JSONObject");
+        String myNumber = isFirst ? "1" : "2";
+        String enemyNumber = (!isFirst) ? "1" : "2";
+
+        this.myNickname = jsonObject.getString("username" + myNumber);
+        this.enemyNickname = jsonObject.getString("username" + enemyNumber);
+
         type = jsonObject.getString("type");
         JSONArray questionsJsonArray = jsonObject.getJSONArray("questions");
         Assert.assertEquals(questionsJsonArray.length(), this.questions.length);
@@ -44,6 +61,21 @@ public class Match implements Parcelable {
             Question question = new Question(jsonQuestion);
             this.questions[i] = question;
         }
+
+        JSONArray myAnswers = jsonObject.getJSONArray("user" + myNumber + "Answers");
+        for (int i = 0; i < myAnswers.length(); i++) {
+            this.myAnswers[i] = (byte) myAnswers.getInt(i);
+        }
+        JSONArray enemyAnswers = jsonObject.getJSONArray("user" + enemyNumber + "Answers");
+        for (int i = 0; i < enemyAnswers.length(); i++) {
+            this.enemyAnswers[i] = (byte) enemyAnswers.getInt(i);
+        }
+
+        this.myRatingChange = jsonObject.getInt("user" + myNumber + "RatingChange");
+        this.enemyRatingChange = jsonObject.getInt("user" + myNumber + "RatingChange");
+
+        matchToken = jsonObject.getString("match_token");
+        isStarted = jsonObject.getBoolean("isStarted");
     }
 
     public Match(String type, Question[] questions, String enemyNickname) {
@@ -59,10 +91,22 @@ public class Match implements Parcelable {
         in.readByteArray(enemyAnswers);
         in.readTypedArray(questions, Question.CREATOR);
 
+        myNickname = in.readString();
         enemyNickname = in.readString();
 
         myRatingChange = in.readInt();
         enemyRatingChange = in.readInt();
+
+        matchToken = in.readString();
+        isStarted = in.readInt() == 1;
+    }
+
+    public void setMyNickname(String myNickname) {
+        this.myNickname = myNickname;
+    }
+
+    public String getMyNickname() {
+        return myNickname;
     }
 
     public int getMyRatingChange() {
@@ -97,11 +141,14 @@ public class Match implements Parcelable {
         parcel.writeByteArray(enemyAnswers);
         parcel.writeTypedArray(questions, 0);
 
+        parcel.writeString(myNickname);
         parcel.writeString(enemyNickname);
 
         parcel.writeInt(myRatingChange);
         parcel.writeInt(enemyRatingChange);
 
+        parcel.writeString(matchToken);
+        parcel.writeInt(isStarted ? 1 : 0);
     }
 
     @Override
@@ -156,5 +203,9 @@ public class Match implements Parcelable {
 
     public void setEnemyNickname(String enemyNickname) {
         this.enemyNickname = enemyNickname;
+    }
+
+    public String getMatchToken() {
+        return matchToken;
     }
 }

@@ -11,7 +11,7 @@ public class RESTConstants {
     public static final String MESSAGE = "message";
 
     public static final String TOKEN = "token";
-
+    public static final String MATCHES="matches";
     public static final String PREF = "PREF";
 
     public static final String BAD_USERNAME = "bad_username";

@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (getSharedPreferences(PREF, MODE_PRIVATE).contains(TOKEN)) {
             showProgress(true);
-            final String token = getSharedPreferences(PREF, MODE_PRIVATE).getString(TOKEN, "Scheiße!");
+            final String token = getSharedPreferences(PREF, MODE_PRIVATE).getString(TOKEN, "Nope!");
             VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(new StringRequest(Request.Method.POST, "https://guarded-caverns-89583.herokuapp.com/validate", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String stringResponse) {
@@ -81,12 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                             onSuccessfulLogin();
                         } else {
                             getSharedPreferences(PREF, MODE_PRIVATE).edit().remove(TOKEN).commit();
+                            showProgress(false);
                         }
                     } catch (JSONException e) {
                         Toast.makeText(LoginActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
                         e.printStackTrace();
+                        showProgress(false);
                     }
-                    showProgress(false);
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -129,16 +131,18 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.getString(RESTConstants.STATUS).equals(RESTConstants.SUCCESS)) {
                         String token = response.getString(RESTConstants.TOKEN);
                         getSharedPreferences(RESTConstants.PREF, MODE_PRIVATE).edit().putString(RESTConstants.TOKEN, token).commit();
+                        getSharedPreferences(RESTConstants.PREF, MODE_PRIVATE).edit().putString(RESTConstants.USERNAME, username).commit();
                         onSuccessfulLogin();
                     } else {
                         passwordView.setError("Wrong credentials");
                         passwordView.requestFocus();
+                        showProgress(false);
                     }
                 } catch (JSONException e) {
                     Toast.makeText(LoginActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
                     e.printStackTrace();
+                    showProgress(false);
                 }
-                showProgress(false);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -175,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.getString(RESTConstants.STATUS).equals(RESTConstants.SUCCESS)) {
                         String token = response.getString(RESTConstants.TOKEN);
                         getSharedPreferences(RESTConstants.PREF, MODE_PRIVATE).edit().putString(RESTConstants.TOKEN, token).commit();
+                        getSharedPreferences(RESTConstants.PREF, MODE_PRIVATE).edit().putString(RESTConstants.USERNAME, username).commit();
                         onSuccessfulLogin();
                     } else {
                         switch (response.getString(RESTConstants.MESSAGE)) {
@@ -192,12 +197,13 @@ public class LoginActivity extends AppCompatActivity {
                                 break;
 
                         }
+                        showProgress(false);
                     }
                 } catch (JSONException e) {
                     Toast.makeText(LoginActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
                     e.printStackTrace();
+                    showProgress(false);
                 }
-                showProgress(false);
             }
         }, new Response.ErrorListener() {
             @Override
