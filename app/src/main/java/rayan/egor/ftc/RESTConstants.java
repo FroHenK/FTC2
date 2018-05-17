@@ -14,6 +14,8 @@ public class RESTConstants {
     public static final String MATCHES="matches";
     public static final String PREF = "PREF";
 
+    public static final String ALREADY_IN_QUEUE="You are already in queue";
+
     public static final String BAD_USERNAME = "bad_username";
     public static final String BAD_PASSWORD = "bad_password";
     public static final String USERNAME_OCCUPIED = "username_occupied";

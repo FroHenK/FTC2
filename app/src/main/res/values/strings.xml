@@ -17,4 +17,5 @@
     </string>
     <string name="i_am_a_bad_programmer">Something went terribly wrong</string>
     <string name="check_internet_connection">Are you connected to the internet?</string>
+    <string name="waiting">Ожидание...</string>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -20,12 +21,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import rayan.egor.ftc.engine.Match;
 
+import static rayan.egor.ftc.RESTConstants.ALREADY_IN_QUEUE;
 import static rayan.egor.ftc.RESTConstants.MATCHES;
+import static rayan.egor.ftc.RESTConstants.MESSAGE;
 import static rayan.egor.ftc.RESTConstants.PREF;
 import static rayan.egor.ftc.RESTConstants.TOKEN;
 import static rayan.egor.ftc.RESTConstants.USERNAME;
@@ -38,6 +42,7 @@ public class MatchesListActivity extends AppCompatActivity {
     private ArrayList<Match> matchesList;
     private MatchesAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private Button newMatchButton;
 
 
     @Override
@@ -72,6 +77,52 @@ public class MatchesListActivity extends AppCompatActivity {
         adapter = new MatchesAdapter(matchesList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        newMatchButton = findViewById(R.id.newMatchButton);
+
+        newMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VolleySingleton.getInstance(MatchesListActivity.this).addToRequestQueue(new StringRequest(Request.Method.POST, "https://guarded-caverns-89583.herokuapp.com/match/get_one", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String stringResponse) {
+                        try {
+                            JSONObject response = new JSONObject(stringResponse);
+                            if (response.getString(RESTConstants.STATUS).equals(RESTConstants.SUCCESS)) {
+                                refresh();
+                            } else {
+                                switch (response.getString(MESSAGE)) {
+                                    case ALREADY_IN_QUEUE:
+                                        Toast.makeText(MatchesListActivity.this, "Вы уже в очереди новых матчей...", Toast.LENGTH_LONG).show();
+                                        break;
+                                    default:
+                                        Toast.makeText(MatchesListActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
+                                        break;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(MatchesListActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(MatchesListActivity.this, R.string.check_internet_connection, Toast.LENGTH_LONG).show();
+                        error.printStackTrace();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String, String> paramsMap = new HashMap<>();
+                        paramsMap.put(RESTConstants.TOKEN, getSharedPreferences(PREF, MODE_PRIVATE).getString(TOKEN, "Nope!"));
+                        return paramsMap;
+                    }
+                });
+            }
+        });
     }
 
     private void refresh() {
@@ -87,6 +138,8 @@ public class MatchesListActivity extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); ++i) {
                             matchesList.add(new Match(getSharedPreferences(PREF, MODE_PRIVATE).getString(USERNAME, "Nope!"), jsonArray.getJSONObject(i)));
                         }
+
+                        Collections.reverse(matchesList);
                         adapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(MatchesListActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();

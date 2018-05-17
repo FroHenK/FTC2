@@ -53,6 +53,9 @@ public class Match implements Parcelable {
         this.myNickname = jsonObject.getString("username" + myNumber);
         this.enemyNickname = jsonObject.getString("username" + enemyNumber);
 
+        if (jsonObject.isNull("username" + enemyNumber))
+            enemyNickname = null;
+
         type = jsonObject.getString("type");
         JSONArray questionsJsonArray = jsonObject.getJSONArray("questions");
         Assert.assertEquals(questionsJsonArray.length(), this.questions.length);

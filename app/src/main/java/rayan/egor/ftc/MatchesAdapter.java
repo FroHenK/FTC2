@@ -58,7 +58,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         Match match = data.get(position);
 
         holder.myNickname.setText(match.getMyNickname());
-        holder.enemyNickname.setText(match.getEnemyNickname());
+        holder.enemyNickname.setText(match.getEnemyNickname() != null ? match.getEnemyNickname() : holder.itemView.getContext().getString(R.string.waiting));
 
         for (int id = 0; id < holder.myScoreViews.size(); ++id) {
             switch (match.getMyAnswers()[id]) {
