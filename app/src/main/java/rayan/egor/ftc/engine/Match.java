@@ -75,7 +75,7 @@ public class Match implements Parcelable {
         }
 
         this.myRatingChange = jsonObject.getInt("user" + myNumber + "RatingChange");
-        this.enemyRatingChange = jsonObject.getInt("user" + myNumber + "RatingChange");
+        this.enemyRatingChange = jsonObject.getInt("user" + enemyNumber + "RatingChange");
 
         matchToken = jsonObject.getString("match_token");
         isStarted = jsonObject.getBoolean("isStarted");

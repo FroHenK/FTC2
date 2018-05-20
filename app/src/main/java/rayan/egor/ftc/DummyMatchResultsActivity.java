@@ -37,7 +37,7 @@ public class DummyMatchResultsActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.matchResultTextView)).setText((match.getMyCorrect() == match.getEnemyCorrect()) ? "Ничья" : ((match.getMyCorrect() > match.getEnemyCorrect()) ? "Победа" : "Поражение"));
 
-        ((TextView) findViewById(R.id.myNicknameTextView)).setText("Dummy_Player");
+        ((TextView) findViewById(R.id.myNicknameTextView)).setText(match.getMyNickname());
         ((TextView) findViewById(R.id.enemyNicknameTextView)).setText(match.getEnemyNickname());
 
         ((TextView) findViewById(R.id.myCorrectTextView)).setText("Правильно: " + match.getMyCorrect());

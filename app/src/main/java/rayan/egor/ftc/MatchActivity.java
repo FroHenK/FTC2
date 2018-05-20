@@ -129,6 +129,11 @@ public class MatchActivity extends AppCompatActivity {
     private void displayMatch(Match match) {
         displayedMatch = match;
         currentQuestionId = match.getAnsweredByMe();
+        if(currentQuestionId==3)
+        {
+            finish();
+            return;
+        }
         question = match.getQuestions()[currentQuestionId];
         shuffledAnswers = question.getShuffledAnswers(new Random((match.getMatchToken() + match.getMyNickname()).hashCode()));//TODO don't forget that the arrangement is given here
         questionTextView.setText(question.getQuestion());

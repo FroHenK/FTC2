@@ -19,4 +19,5 @@
     <string name="check_internet_connection">Are you connected to the internet?</string>
     <string name="waiting">Ожидание...</string>
     <string name="already_in_queue">Вы уже в очереди новых матчей...</string>
+    <string name="waiting_opponent">Ожидание оппонента...</string>
 </resources>

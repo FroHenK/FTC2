@@ -2,6 +2,7 @@ package rayan.egor.ftc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -60,8 +61,20 @@ public class MatchesListActivity extends AppCompatActivity {
                 if (viewHolder instanceof MatchesAdapter.MatchViewHolder) {
                     MatchesAdapter.MatchViewHolder matchViewHolder = (MatchesAdapter.MatchViewHolder) viewHolder;
                     Match match = matchViewHolder.getCurrentMatch();
-                    Intent intent = new Intent(MatchesListActivity.this, MatchActivity.class);
-                    intent.putExtra(MATCH_TOKEN, match.getMatchToken());
+                    if (match.getAnsweredByMe() != 3) {
+                        Intent intent = new Intent(MatchesListActivity.this, MatchActivity.class);
+                        intent.putExtra(MATCH_TOKEN, match.getMatchToken());
+                        startActivityForResult(intent, Constants.PLAY_MATCH_REQUEST);
+                        return;
+                    }
+
+                    if (match.getAnsweredByEnemy() != 3) {
+                        Snackbar.make(swipeRefreshLayout, R.string.waiting_opponent, Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Intent intent = new Intent(MatchesListActivity.this, DummyMatchResultsActivity.class);
+                    intent.putExtra(getString(R.string.match), match);
                     startActivity(intent);
                 }
             }
@@ -132,6 +145,11 @@ public class MatchesListActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        refresh();
     }
 
     private void refresh() {
