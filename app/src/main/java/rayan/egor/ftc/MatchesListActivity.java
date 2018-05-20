@@ -93,7 +93,7 @@ public class MatchesListActivity extends AppCompatActivity {
                             } else {
                                 switch (response.getString(MESSAGE)) {
                                     case ALREADY_IN_QUEUE:
-                                        Toast.makeText(MatchesListActivity.this, "Вы уже в очереди новых матчей...", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MatchesListActivity.this, R.string.already_in_queue, Toast.LENGTH_LONG).show();
                                         break;
                                     default:
                                         Toast.makeText(MatchesListActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
