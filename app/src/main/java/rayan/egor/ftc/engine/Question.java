@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Question implements Parcelable {
 
@@ -74,6 +75,12 @@ public class Question implements Parcelable {
     public List<String> getShuffledAnswers() {
         List<String> answers = new ArrayList<>(Arrays.asList(this.answers));
         Collections.shuffle(answers);
+        return answers;
+    }
+
+    public List<String> getShuffledAnswers(Random random) {
+        List<String> answers = new ArrayList<>(Arrays.asList(this.answers));
+        Collections.shuffle(answers, random);
         return answers;
     }
 

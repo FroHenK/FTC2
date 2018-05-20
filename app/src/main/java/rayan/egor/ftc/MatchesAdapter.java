@@ -22,6 +22,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         public ArrayList<ImageView> enemyScoreViews;
         public final TextView myNickname;
         public final TextView enemyNickname;
+        private Match currentMatch;
 
         public MatchViewHolder(View itemView) {
             super(itemView);
@@ -37,6 +38,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
             enemyScoreViews.add((ImageView) itemView.findViewById(R.id.scoreView4));
             enemyScoreViews.add((ImageView) itemView.findViewById(R.id.scoreView5));
             enemyScoreViews.add((ImageView) itemView.findViewById(R.id.scoreView6));
+        }
+
+        public Match getCurrentMatch() {
+            return currentMatch;
+        }
+
+        public void setCurrentMatch(Match currentMatch) {
+            this.currentMatch = currentMatch;
         }
     }
 
@@ -60,6 +69,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         holder.myNickname.setText(match.getMyNickname());
         holder.enemyNickname.setText(match.getEnemyNickname() != null ? match.getEnemyNickname() : holder.itemView.getContext().getString(R.string.waiting));
 
+        holder.setCurrentMatch(match);
         for (int id = 0; id < holder.myScoreViews.size(); ++id) {
             switch (match.getMyAnswers()[id]) {
                 case Match.ANSWER_UNANSWERED:

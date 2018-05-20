@@ -11,10 +11,15 @@ public class RESTConstants {
     public static final String MESSAGE = "message";
 
     public static final String TOKEN = "token";
-    public static final String MATCHES="matches";
+    public static final String MATCHES = "matches";
+
     public static final String PREF = "PREF";
 
-    public static final String ALREADY_IN_QUEUE="You are already in queue";
+    public static final String QUESTION_ID = "question_id";
+    public static final String ANSWER = "answer";
+
+    public static final String ALREADY_IN_QUEUE = "You are already in queue";
+    public static final String MATCH_TOKEN = "match_token";
 
     public static final String BAD_USERNAME = "bad_username";
     public static final String BAD_PASSWORD = "bad_password";

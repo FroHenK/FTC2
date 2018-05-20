@@ -1,5 +1,6 @@
 package rayan.egor.ftc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import rayan.egor.ftc.engine.Match;
 
 import static rayan.egor.ftc.RESTConstants.ALREADY_IN_QUEUE;
 import static rayan.egor.ftc.RESTConstants.MATCHES;
+import static rayan.egor.ftc.RESTConstants.MATCH_TOKEN;
 import static rayan.egor.ftc.RESTConstants.MESSAGE;
 import static rayan.egor.ftc.RESTConstants.PREF;
 import static rayan.egor.ftc.RESTConstants.TOKEN;
@@ -54,7 +56,14 @@ public class MatchesListActivity extends AppCompatActivity {
         onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
+                if (viewHolder instanceof MatchesAdapter.MatchViewHolder) {
+                    MatchesAdapter.MatchViewHolder matchViewHolder = (MatchesAdapter.MatchViewHolder) viewHolder;
+                    Match match = matchViewHolder.getCurrentMatch();
+                    Intent intent = new Intent(MatchesListActivity.this, MatchActivity.class);
+                    intent.putExtra(MATCH_TOKEN, match.getMatchToken());
+                    startActivity(intent);
+                }
             }
         };
 
