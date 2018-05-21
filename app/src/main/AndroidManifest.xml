@@ -10,15 +10,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".MatchActivity" />
-        <activity android:name=".DummyMatchInfoActivity" />
-        <activity android:name=".DummyMatchResultsActivity" />
-        <activity android:name=".DummyRatingDisplayActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DummyMatchInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DummyMatchResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DummyRatingDisplayActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
-            android:label="FTC">
+            android:label="FTC"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
