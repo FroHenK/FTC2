@@ -43,18 +43,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Intent intent = new Intent(MainActivity.this, MatchActivity.class);
                 Intent intent = new Intent(MainActivity.this, MatchesListActivity.class);
-
-//                InputStream stream = MainActivity.this.getResources().openRawResource(R.raw.data);
-//                try {
-//                    JSONObject jsonObject = new JSONObject(Tools.convertStreamToString(stream));
-//                    JSONArray matches = jsonObject.getJSONArray("matches");
-//                    Match match = new Match(matches.getJSONObject(new Random().nextInt(matches.length())));
-//                    match.setEnemyNickname("Dummy_Enemy#" + new Random().nextInt(10));
-//                    intent.putExtra(getString(R.string.match), match);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-
                 startActivityForResult(intent, PLAY_MATCH_REQUEST);
             }
         });

@@ -43,8 +43,8 @@ public class DummyMatchResultsActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.myCorrectTextView)).setText("Правильно: " + match.getMyCorrect());
         ((TextView) findViewById(R.id.enemyCorrectTextView)).setText("Правильно: " + match.getEnemyCorrect());
 
-        ((TextView) findViewById(R.id.myRatingChangeTextView)).setText((match.getMyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getMyRatingChange()));
-        ((TextView) findViewById(R.id.enemyRatingChangeTextView)).setText((match.getEnemyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getEnemyRatingChange()));
+        ((TextView) findViewById(R.id.myRatingChangeTextView)).setText((match.getMyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getMyRatingChange()) + " баллов");
+        ((TextView) findViewById(R.id.enemyRatingChangeTextView)).setText((match.getEnemyRatingChange() < 0 ? "-" : "+") + Math.abs(match.getEnemyRatingChange()) + " баллов");
 
     }
 }

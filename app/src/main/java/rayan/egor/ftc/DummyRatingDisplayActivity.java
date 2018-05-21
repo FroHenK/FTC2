@@ -1,10 +1,17 @@
 package rayan.egor.ftc;
 
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,10 +26,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import static rayan.egor.ftc.RESTConstants.PREF;
+import static rayan.egor.ftc.RESTConstants.USERNAME;
 
 public class DummyRatingDisplayActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView ratingRecyclerView;
+    private LinearLayoutManager layoutManager;
+    private List<Player> playersList;
+    private PlayersAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,14 @@ public class DummyRatingDisplayActivity extends AppCompatActivity {
                 refresh();
             }
         });
+        ratingRecyclerView = findViewById(R.id.ratingRecyclerView);
+        layoutManager = new LinearLayoutManager(this);
+        ratingRecyclerView.setLayoutManager(layoutManager);
+        ratingRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        playersList = new ArrayList<Player>();
+        adapter = new PlayersAdapter(playersList);
+        ratingRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         refresh();
     }
 
@@ -46,29 +69,23 @@ public class DummyRatingDisplayActivity extends AppCompatActivity {
                 try {
                     JSONObject response = new JSONObject(stringResponse);
                     if (response.getString(RESTConstants.STATUS).equals(RESTConstants.SUCCESS)) {
-                        ArrayList<Player> players = new ArrayList<>();
+                        playersList.clear();
 
                         JSONArray jsonArray = response.getJSONArray("result");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            players.add(new Player(object.getInt("rating"), object.getString("username")));
+                            playersList.add(new Player(object.getInt("rating"), object.getString("username")));
                         }
 
-                        Collections.sort(players, new Comparator<Player>() {
+                        Collections.sort(playersList, new Comparator<Player>() {
                             @Override
                             public int compare(Player a, Player b) {
                                 return b.rating - a.rating;
                             }
                         });
 
-                        ArrayList<String> info = new ArrayList<>();
-                        for (Player player : players)
-                            info.add(player.nickname + ": " + player.rating);
+                        adapter.notifyDataSetChanged();
 
-                        final ArrayAdapter adapter = new ArrayAdapter(DummyRatingDisplayActivity.this,
-                                android.R.layout.simple_list_item_1, info);
-
-                        ((ListView) findViewById(R.id.ratingListView)).setAdapter(adapter);
                     } else {
                         Toast.makeText(DummyRatingDisplayActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
                     }
@@ -88,7 +105,7 @@ public class DummyRatingDisplayActivity extends AppCompatActivity {
         }));
     }
 
-    private class Player {
+    private static class Player {
         public int rating;
         public String nickname;
 
@@ -97,4 +114,61 @@ public class DummyRatingDisplayActivity extends AppCompatActivity {
             this.nickname = nickname;
         }
     }
+
+    private static class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder> {
+        private final List<Player> data;
+
+        public static class PlayerViewHolder extends RecyclerView.ViewHolder {
+
+            private final TextView nicknameTextView;
+            private final TextView scoreTextView;
+
+            public PlayerViewHolder(View itemView) {
+                super(itemView);
+                nicknameTextView = itemView.findViewById(R.id.nicknameTextView);
+                scoreTextView = itemView.findViewById(R.id.scoreTextView);
+            }
+        }
+
+        public PlayersAdapter(List<Player> data) {
+            this.data = data;
+        }
+
+        @Override
+        public PlayerViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_user_rating, parent, false);
+            return new PlayerViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(PlayerViewHolder holder, int position) {
+            Player player = data.get(position);
+            holder.nicknameTextView.setText(player.nickname);
+            if (player.nickname.equals(holder.itemView.getContext().getSharedPreferences(PREF, MODE_PRIVATE).getString(USERNAME, "Nope!"))) {
+                holder.nicknameTextView.setTypeface(null, Typeface.BOLD);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.nicknameTextView.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.colorCorrect, null));
+                } else {
+                    holder.nicknameTextView.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.colorCorrect));
+                }
+            } else {
+                holder.nicknameTextView.setTypeface(null, Typeface.NORMAL);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.nicknameTextView.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.rating_username, null));
+                } else {
+                    holder.nicknameTextView.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.rating_username));
+                }
+            }
+            holder.scoreTextView.setText(String.valueOf(player.rating));
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+    }
+
 }
