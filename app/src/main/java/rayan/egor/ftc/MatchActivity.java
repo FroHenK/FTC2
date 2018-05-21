@@ -201,7 +201,6 @@ public class MatchActivity extends AppCompatActivity {
             }
         };
 
-        getSharedPreferences(PREF_DATA, MODE_PRIVATE).edit().putInt(QUESTION_ID + "_" + matchToken, currentQuestionId + 1).commit();
 
         VolleySingleton.getInstance(MatchActivity.this).addToRequestQueue(new StringRequest(Request.Method.POST, "https://guarded-caverns-89583.herokuapp.com/match/submit_answer", new Response.Listener<String>() {
             @Override
@@ -210,6 +209,7 @@ public class MatchActivity extends AppCompatActivity {
                     JSONObject response = new JSONObject(stringResponse);
                     if (response.getString(RESTConstants.STATUS).equals(RESTConstants.SUCCESS)) {
                         showProgress(false);
+                        getSharedPreferences(PREF_DATA, MODE_PRIVATE).edit().putInt(QUESTION_ID + "_" + matchToken, currentQuestionId + 1).commit();
                         handler.postDelayed(r, 3000);
                     } else {
                         Toast.makeText(MatchActivity.this, R.string.i_am_a_bad_programmer, Toast.LENGTH_LONG).show();
