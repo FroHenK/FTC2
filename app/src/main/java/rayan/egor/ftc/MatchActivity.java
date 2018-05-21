@@ -38,6 +38,7 @@ import static rayan.egor.ftc.Constants.PLAY_MATCH_REQUEST;
 import static rayan.egor.ftc.RESTConstants.ANSWER;
 import static rayan.egor.ftc.RESTConstants.MATCH_TOKEN;
 import static rayan.egor.ftc.RESTConstants.PREF;
+import static rayan.egor.ftc.RESTConstants.PREF_DATA;
 import static rayan.egor.ftc.RESTConstants.QUESTION_ID;
 import static rayan.egor.ftc.RESTConstants.TOKEN;
 import static rayan.egor.ftc.RESTConstants.USERNAME;
@@ -129,8 +130,11 @@ public class MatchActivity extends AppCompatActivity {
     private void displayMatch(Match match) {
         displayedMatch = match;
         currentQuestionId = match.getAnsweredByMe();
-        if(currentQuestionId==3)
-        {
+
+        int questionIdFromPreferences = getSharedPreferences(PREF_DATA, MODE_PRIVATE).getInt(QUESTION_ID + "_" + matchToken, 0);
+        currentQuestionId = Math.max(questionIdFromPreferences, currentQuestionId);
+
+        if (currentQuestionId == 3) {
             finish();
             return;
         }
@@ -150,7 +154,8 @@ public class MatchActivity extends AppCompatActivity {
                 setResult(RESULT_OK, data);
                 finish();
             } else {
-                Toast.makeText(this, "Uh oh! Developer is an idiot...", Toast.LENGTH_LONG).show();
+                setResult(RESULT_CANCELED, data);
+                finish();
             }
         }
     }
@@ -195,6 +200,8 @@ public class MatchActivity extends AppCompatActivity {
                 }
             }
         };
+
+        getSharedPreferences(PREF_DATA, MODE_PRIVATE).edit().putInt(QUESTION_ID + "_" + matchToken, currentQuestionId + 1).commit();
 
         VolleySingleton.getInstance(MatchActivity.this).addToRequestQueue(new StringRequest(Request.Method.POST, "https://guarded-caverns-89583.herokuapp.com/match/submit_answer", new Response.Listener<String>() {
             @Override

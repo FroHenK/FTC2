@@ -14,6 +14,8 @@ public class RESTConstants {
     public static final String MATCHES = "matches";
 
     public static final String PREF = "PREF";
+    public static final String PREF_DATA = "PREF";
+
 
     public static final String QUESTION_ID = "question_id";
     public static final String ANSWER = "answer";
