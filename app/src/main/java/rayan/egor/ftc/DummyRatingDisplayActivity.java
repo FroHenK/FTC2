@@ -161,7 +161,7 @@ public class DummyRatingDisplayActivity extends AppCompatActivity {
                     holder.nicknameTextView.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.rating_username));
                 }
             }
-            holder.scoreTextView.setText(String.valueOf(player.rating));
+            holder.scoreTextView.setText(String.valueOf(player.rating)+" баллов");
         }
 
         @Override
