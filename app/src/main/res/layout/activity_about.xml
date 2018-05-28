@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="rayan.egor.ftc.AboutActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text='Привет! Добро пожаловать! Это приложение FTC. Тут ты можешь не только получить знания,но и помочь планете.Заходи во вкладку "Играть" и начинай матч.Если нашелся соперник,попытайся ответить на большее количество вопросов.Так ты будешь получать баллы и подниматься в рейтинге.Кстати,свой рейтинг ты можешь узнать во вкладке "Рейтинг".В будущих версиях планируется отправка средств на посадку деревьев,а пока тренируйся и играй с друзьями...'
+        android:textColor="#000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

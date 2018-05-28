@@ -5,14 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.Random;
 
 import rayan.egor.ftc.engine.Match;
 
@@ -24,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button playButton;
     private Button ratingButton;
-    private Button settingsButton;
+    private Button aboutButton;
     private Button logoutButton;
 
 
@@ -35,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         playButton = findViewById(R.id.answerButton1);
         ratingButton = findViewById(R.id.answerButton2);
-        settingsButton = findViewById(R.id.answerButton3);
+        aboutButton = findViewById(R.id.answerButton3);
         logoutButton = findViewById(R.id.logoutButton);
 
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -46,10 +38,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, PLAY_MATCH_REQUEST);
             }
         });
+
         ratingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DummyRatingDisplayActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        aboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
         });
